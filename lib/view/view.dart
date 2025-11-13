@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../model/question.dart';
 
 class TerminalView {
 
@@ -9,26 +10,42 @@ class TerminalView {
     return stdin.readLineSync();
   }
 
+  String? promptQuestion(Question question) {
+
+    // Affichage
+    print(question.text);
+    for (int i = 0 ; i < question.answers.length ; i++) {
+      print("${i+1} - ${question.answers[i].text}");
+    }
+    print(
+      "--------------------------------------------------------------------");
+
+    return stdin.readLineSync();
+    
+  }
+
   void printMessage(String message) {
     print(message);
   }
 
   void printMainMenu() {
     print("...  .-  ---  -=  ===  =[ Q C M ]=  ===  =-  ---  -.  ... \n\n");
-    print("1 - Gestion des thêmes ");
-    print("2 - Gestion de la Partie ");
-    print("3 - Lancer la Partie ");
-    print("4 - Quitter \n\n");
+    print("1 - Choix du chapitre ");
+    print("2 - Quitter \n\n");
   }
 
-  void printManageThemesMenu() {
-    print("...  .-  ---  -=  ===  =[ GESTION DES THÊMES ]=  ===  =-  ---  -.  ... \n\n");
-    print("1 - Créer un thême \n");
-    print("2 - Ajouter une question à un thême");
-    print("3 - Afficher les thêmes \n");
-    print("4 - Supprimer une question d'un thême");
-    print("5 - Supprimer un thême \n");
-    print("6 - Revenir au menu Principal \n\n");
+  void printChapterMenu() {
+    print("...  .-  ---  -=  ===  =[ CHOIX DU CHAPITRE ]=  ===  =-  ---  -.  ... \n\n");
+    print("1 - Chapitre 1\n");
+    print("2 - Chapitre 2");
+    print("3 - Chapitre 3");
+    print("4 - Chapitre 4");
+    print("5 - Chapitre 5");
+    print("6 - Chapitre 6");
+    print("7 - Chapitre 7");
+    print("8 - Chapitre 8");
+    print("9 - Chapitre 9");
+    print("10 - Revenir au menu Principal \n\n");
   }
   
 }
