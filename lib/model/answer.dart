@@ -1,5 +1,8 @@
 class Answer 
 {
-  late String text;
-  late bool correct;
+  String label;
+  bool correct;
+  int id;
+
+  Answer(this.id, this.label, this.correct);
 }

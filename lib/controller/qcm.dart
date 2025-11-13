@@ -1,12 +1,19 @@
+
 import '../view/view.dart';
 import '../model/answer.dart';
 import '../model/question.dart';
+import '../model/chapter.dart';
+import '../model/database_qcm_helper.dart';
 
 class QCMController {
 
   final TerminalView view = TerminalView();
+  late final DatabaseQcmHelper database;
+  int score = 0 ;
 
-  QCMController();
+  QCMController(){
+    database = DatabaseQcmHelper();
+  }
 
   void run() {
     while (true) {
@@ -37,20 +44,21 @@ class QCMController {
   }
 
   void chooseChapter() {
+    List<Chapter> listeChapitres = database.getChapters();
     while (true) {
 
-      view.printChapterMenu();
+      view.printChapterMenu(listeChapitres);
       String? stringChoice = view.prompt(
           'Choisir une action avec les nombres :');
 
       if (stringChoice != null && int.tryParse(stringChoice) != null) {
         int intChoice = int.parse(stringChoice);
         
-        if (intChoice <= 9 && intChoice >=1) {
-          runQuestion(intChoice);
-        }
-        else if (intChoice == 10) {
+        if (intChoice == (listeChapitres.length+1)) {
           return;
+        }
+        else if (intChoice <= listeChapitres.length && intChoice >=1) {
+          runChapter(listeChapitres[intChoice-1]);
         }
         else {
           view.printMessage('Commande non reconnue.');
@@ -63,29 +71,23 @@ class QCMController {
     }
   }
 
-  void runQuestion(int chapter){
-    view.printMessage("Bienvenue dans le chapitre $chapter");
+  void runChapter(Chapter chapter){
+    score = 0;
 
-    Question myQuestion = Question();
-    myQuestion.text = "Va Bene ?";
+    view.printMessage(chapter.title);
 
-    Answer answer1 = Answer();
-    answer1.text = "Si";
-    answer1.correct = true;
+    List<Question> listeDeQuestions = database.getQuestions(chapter);
 
-    Answer answer2 = Answer();
-    answer2.text = "Nah";
-    answer2.correct = false;
-
-    myQuestion.answers = [answer1, answer2];
-    bool userAnswer = askQuestion(myQuestion);
-
-    if (userAnswer) {
-      view.prompt("50 points pour Gryffondor !");
+    for (Question question in listeDeQuestions) {
+      question.answers = database.getAnswers(question);
+      bool userAnswer = askQuestion(question);
+      if (userAnswer) {
+        score += 1;
+      }
     }
-    else {
-      view.prompt("Loupé...");
-    }
+
+    view.prompt("Game Over : Votre Score est de $score / ${listeDeQuestions.length}");
+
   }
 
   bool askQuestion(Question question){

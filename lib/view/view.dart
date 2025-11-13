@@ -1,5 +1,7 @@
 import 'dart:io';
 import '../model/question.dart';
+import '../model/chapter.dart';
+import '../model/answer.dart';
 
 class TerminalView {
 
@@ -13,9 +15,9 @@ class TerminalView {
   String? promptQuestion(Question question) {
 
     // Affichage
-    print(question.text);
+    print(question.label);
     for (int i = 0 ; i < question.answers.length ; i++) {
-      print("${i+1} - ${question.answers[i].text}");
+      print("${i+1} - ${question.answers[i].label}");
     }
     print(
       "--------------------------------------------------------------------");
@@ -34,18 +36,13 @@ class TerminalView {
     print("2 - Quitter \n\n");
   }
 
-  void printChapterMenu() {
+  void printChapterMenu(List<Chapter> listeChapitres) {
     print("...  .-  ---  -=  ===  =[ CHOIX DU CHAPITRE ]=  ===  =-  ---  -.  ... \n\n");
-    print("1 - Chapitre 1\n");
-    print("2 - Chapitre 2");
-    print("3 - Chapitre 3");
-    print("4 - Chapitre 4");
-    print("5 - Chapitre 5");
-    print("6 - Chapitre 6");
-    print("7 - Chapitre 7");
-    print("8 - Chapitre 8");
-    print("9 - Chapitre 9");
-    print("10 - Revenir au menu Principal \n\n");
+    int i = 0;
+    for (i ; i < listeChapitres.length; i++) {
+      print("${i+1} - ${listeChapitres[i].title}");
+    }
+    print("\n${i+1} - Revenir au menu Principal \n\n");
   }
   
 }

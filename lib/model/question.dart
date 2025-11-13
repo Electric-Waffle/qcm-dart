@@ -1,6 +1,10 @@
 import './answer.dart';
 
 class Question {
-  late String text;
+  int id;
+  String label;
+
+  Question(this.id, this.label);
+
   late List<Answer> answers;
 }
