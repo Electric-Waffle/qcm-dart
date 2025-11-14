@@ -1,9 +1,9 @@
 
 import '../view/view.dart';
-import '../model/answer.dart';
 import '../model/question.dart';
 import '../model/chapter.dart';
 import '../model/database_qcm_helper.dart';
+import 'dart:math';
 
 class QCMController {
 
@@ -74,26 +74,27 @@ class QCMController {
   void runChapter(Chapter chapter){
     score = 0;
 
-    view.printMessage(chapter.title);
-
     List<Question> listeDeQuestions = database.getQuestions(chapter);
+    listeDeQuestions.shuffle(Random());
 
     for (Question question in listeDeQuestions) {
-      question.answers = database.getAnswers(question);
-      bool userAnswer = askQuestion(question);
+      question.setAnswers(database.getAnswers(question));
+      bool userAnswer = askQuestion(question, chapter.title);
       if (userAnswer) {
         score += 1;
       }
     }
 
-    view.prompt("Game Over : Votre Score est de $score / ${listeDeQuestions.length}");
+    view.printGameOver(score,  listeDeQuestions.length);
 
   }
 
-  bool askQuestion(Question question){
+  bool askQuestion(Question question, String chapterTitle){
     while (true) {
 
-      String? stringAnswer = view.promptQuestion(question);
+      view.promptQuestion(question, chapterTitle);
+      String? stringAnswer = view.prompt(
+        'Choisir une action avec les nombres :');
 
       // La réponse du user est elle un int ?
       if (stringAnswer != null && int.tryParse(stringAnswer) != null) {
