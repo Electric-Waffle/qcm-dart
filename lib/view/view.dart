@@ -1,7 +1,6 @@
 import 'dart:io';
 import '../model/question.dart';
 import '../model/chapter.dart';
-import '../model/answer.dart';
 
 class TerminalView {
 
